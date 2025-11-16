@@ -1,35 +1,53 @@
-//TODO add imports if needed
-//import { exMain } from "./exclude/exampleAss2.js"
-//TODO add/change doc as needed
-/**
- * TODO - Write functional code for this application. You can call any other function, but usage of ".toString(numberSystem)" and "Number.parseInt(number, numberSystem)" is forbidden (only permitted when used on individual digits).
- * The main function which calls the application. 
- * TODO - Please, add specific description here for the application purpose.
- * @param {string} inputNumber number that is being converted
- * @param {number} inputNumberSystem numerical system that the inputNumber is being converted from
- * @param {number} outputNumberSystem numerical system that the inputNumber is being converted into
- * @returns {string} containing number converted to output system
- */
+
+function digitToValue(digit) {
+const value = digit.charCodeAt(0) - '0'.charCodeAt(0);
+if (value < 0 || value > 9) throw new Error("Invalid digit");
+return value;
+}
+
+
+function valueToDigit(value) {
+return String.fromCharCode('0'.charCodeAt(0) + value);
+}
+
+
+function toDecimal(numStr, fromBase) {
+let value = 0;
+for (let i = 0; i < numStr.length; i++) {
+const digitValue = digitToValue(numStr[i]);
+if (digitValue >= fromBase) throw new Error("Digit outside base range");
+value = value * fromBase + digitValue;
+}
+return value;
+}
+
+
+// Convert decimal number to base (2 or 10)
+function fromDecimal(value, toBase) {
+if (value === 0) return "0";
+let result = "";
+while (value > 0) {
+const remainder = value % toBase;
+result = valueToDigit(remainder) + result;
+value = Math.floor(value / toBase);
+}
+return result;
+}
+
+
+
 export function main(inputNumber, inputNumberSystem, outputNumberSystem) {
-  //TODO code
-  //let dtoOut = exMain(inputNumber, inputNumberSystem, outputNumberSystem);
-  return dtoOut;
+const decimalValue = toDecimal(inputNumber, inputNumberSystem);
+const converted = fromDecimal(decimalValue, outputNumberSystem);
+return converted;
 }
 
-/**
- * TODO - Change this to contain all input number systems that your application can convert from.
- * Function which returns which number systems are permitted on input.
- * @returns {Array} array of numbers refering to permitted input systems
- */
+
 export function permittedInputSystems() {
-	return [10, 2];
+return [10, 2];
 }
 
-/**
- * TODO - Change this to contain all output number systems that your application can convert to.
- * Function which returns which number systems are permitted on output.
- * @returns {Array} array of numbers refering to permitted output systems
- */
+
 export function permittedOutputSystems() {
-	return [10, 2];
+return [10, 2];
 }
